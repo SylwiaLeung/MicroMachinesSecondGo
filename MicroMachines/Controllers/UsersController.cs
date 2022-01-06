@@ -12,11 +12,15 @@ namespace MicroMachines.Controllers
     {
         private readonly IHttpOrdersClient _ordersClient;
         private readonly IHttpStockClient _stockClient;
+        private readonly IUserRepository _userRepo;
 
-        public UsersController(IHttpOrdersClient ordersClient, IHttpStockClient stockClient)
+        public UsersController(IHttpOrdersClient ordersClient, 
+            IHttpStockClient stockClient, 
+            IUserRepository userRepo)
         {
             _ordersClient = ordersClient;
             _stockClient = stockClient;
+            _userRepo = userRepo;
         }
 
         [HttpGet("orders")]
@@ -56,17 +60,35 @@ namespace MicroMachines.Controllers
             return Ok(products);
         }
 
-        [HttpPost("orders")]
-        public async Task<ActionResult> CreateNewOrder([FromBody] OrderCreateDto orderDto)
+        [HttpPost("orders/{userId}")]
+        public async Task<ActionResult<OrderReadDto>> CreateNewOrder(int productId, int userId)
         {
-            var succeeded = await _ordersClient.CreateOrder(orderDto);
-            return succeeded ? NoContent() : BadRequest();
+            var product = await _stockClient.GetProductById(productId);
+            var user = await _userRepo.GetSingle(userId);
+            var newOrderDto = new OrderCreateDto() { UserId = userId, ProductName = product.Name, Amount = product.Price };
+
+            if (!product.Available)
+            {
+                return NotFound("The item you are trying to purchase in unavailable.");
+            }
+            else if (user.Funds < product.Price)
+            {
+                return BadRequest("You have insufficient funds.");
+            }
+
+            var newOrder = await _ordersClient.CreateOrder(newOrderDto);
+
+            return Ok(newOrder);
         }
 
-        //[HttpPut("{orderId}")]
-        //public async Task PayForOrder(int orderId)
-        //{
+        [HttpPut("orders/{orderId}")]
+        public async Task<ActionResult<OrderReadDto>> PayForOrder(int orderId)
+        {
+            var order = await _ordersClient.PayForOrder(orderId);
 
-        //}
+            if (order == null) return BadRequest("cannot update");
+
+            return Ok(order);
+        }
     }
-}
+};

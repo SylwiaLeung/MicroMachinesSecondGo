@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using StockService.Models.Dtos;
-using StockService.Models.Dtos.Product;
 using StockService.Models.Entities;
 
 namespace StockService.MappingProfiles
@@ -11,7 +10,6 @@ namespace StockService.MappingProfiles
         {
             CreateMap<Stock, StockReadDto>();
             CreateMap<Category, CategoryReadDto>();
-            CreateMap<ProductCount, ProductCountReadDto>();
             CreateMap<Product, ProductReadDto>()
                 .ForMember(x => x.CategoryName, r => r.MapFrom(p => p.Category.Name))
                 .ForMember(x => x.StockName, r => r.MapFrom(p => p.Stock.Name));

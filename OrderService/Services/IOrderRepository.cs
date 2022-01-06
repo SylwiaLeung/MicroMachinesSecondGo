@@ -8,5 +8,7 @@ namespace OrderService.Services
         Task Create(Order order);
         Task<IEnumerable<Order>> GetAllByCondition(Func<Order, bool> condition);
         Task<IEnumerable<Order>> GetAll();
+        Task<Order> GetSingle(int orderId);
+        Task Update(Order order);
     }
 }

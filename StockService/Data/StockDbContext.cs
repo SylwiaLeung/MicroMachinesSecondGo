@@ -13,6 +13,5 @@ namespace StockService.Data
         public DbSet<Stock> Stocks { get; set; }
         public DbSet<Product> Products { get;set; }
         public DbSet<Category> Categories { get; set; }
-        public DbSet<ProductCount> ProductCounts { get; set; }
     }
 }

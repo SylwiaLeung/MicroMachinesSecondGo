@@ -28,11 +28,6 @@ namespace StockService.Data
                     context.Products.AddRange(GetProducts());
                     context.SaveChanges();
                 }
-                if (!context.ProductCounts.Any())
-                {
-                    context.ProductCounts.AddRange(GetProductCounts());
-                    context.SaveChanges();
-                }
             }
         }
 
@@ -69,20 +64,6 @@ namespace StockService.Data
                 new Product(){ Id = 6, Name = "Pompon", StockId = 2, CategoryId = 1, Price = 0.90M },
             };
             return products;
-        }
-
-        private static IEnumerable<ProductCount> GetProductCounts()
-        {
-            var productcounts = new List<ProductCount>()
-            {
-                new ProductCount(){ ProductId = 1, StockId = 2, Quantity = 10 },
-                new ProductCount(){ ProductId = 2, StockId = 2, Quantity = 50 },
-                new ProductCount(){ ProductId = 3, StockId = 2, Quantity = 2 },
-                new ProductCount(){ ProductId = 4, StockId = 1, Quantity = 5 },
-                new ProductCount(){ ProductId = 5, StockId = 1, Quantity = 1 },
-                new ProductCount(){ ProductId = 6, StockId = 2, Quantity = 20 },
-            };
-            return productcounts;
         }
     }
 }

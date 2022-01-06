@@ -29,17 +29,16 @@ namespace OrderService.Data
                 new Order()
                 {
                     Id = 1,
+                    ProductName = "Ananas",
+                    Amount = 10,
                     UserId = 1
                 },
                 new Order()
                 { 
                     Id = 2, 
                     UserId = 2,
-                    Products = new List<ProductReadDto>()
-                    {
-                        new ProductReadDto() { Id = 1, Name = "Test", Price = 10 },
-                        new ProductReadDto() { Id = 2, Name = "Test2", Price = 20 }
-                    },
+                    ProductName = "Kwiatek",
+                    Amount = 100,
                     Status = Status.Paid,
                     UpdatedDate = DateTime.Now
                 }

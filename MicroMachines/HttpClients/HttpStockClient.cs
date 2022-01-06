@@ -42,5 +42,20 @@ namespace MicroMachines.HttpClients
                 return null;
             }
         }
+
+        public async Task<ProductReadDto> GetProductById(int productId)
+        {
+            var requestMessage = new HttpRequestMessage(HttpMethod.Get, $"{_url}/api/stocks/{productId}");
+            var response = await _httpClient.SendAsync(requestMessage);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return await response.Content.ReadAsAsync<ProductReadDto>(new[] { new JsonMediaTypeFormatter() });
+            }
+            else
+            {
+                return null;
+            }
+        }
     }
 }

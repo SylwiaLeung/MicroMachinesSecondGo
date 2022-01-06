@@ -26,9 +26,9 @@ namespace MicroMachines.Data
         {
             var users = new List<User>()
             {
-                new User(){ Name = "Kot Lucek", Funds = 666.5M },
+                new User(){ Name = "Kot Lucek", Funds = 66.5M },
                 new User(){ Name = "Kot Puotka", Funds = 132 },
-                new User(){ Name = "Random", Funds = 84.69M }
+                new User(){ Name = "Random", Funds = 1.69M }
             };
             return users;
         }

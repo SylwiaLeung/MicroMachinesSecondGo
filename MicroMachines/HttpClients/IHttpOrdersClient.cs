@@ -6,7 +6,8 @@ namespace MicroMachines.HttpClients
     {
         Task<IEnumerable<OrderReadDto>> GetUsersOrderHistoryAsync(int id);
         Task<IEnumerable<OrderReadDto>> GetUsersPurchaseHistoryAsync(int id);
-        Task<bool> CreateOrder(OrderCreateDto orderDto);
+        Task<OrderReadDto> CreateOrder(OrderCreateDto orderDto);
         Task<IEnumerable<OrderReadDto>> GetAllOrdersAsync();
+        Task<OrderReadDto> PayForOrder(int orderId);
     }
 }

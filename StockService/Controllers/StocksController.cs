@@ -1,9 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using StockService.Models.Dtos;
-using StockService.Models.Dtos.Product;
-using StockService.Models.Entities;
-using StockService.Services;
 using StockService.Services.Interfaces;
 
 namespace StockService.Controllers
@@ -14,14 +11,12 @@ namespace StockService.Controllers
     {
         private readonly IMapper _mapper;
         private readonly IProductRepository _productRepo;
-        private readonly IStockRepository _stockRepo;
 
 
-        public StocksController(IMapper mapper, IProductRepository productRepo, IStockRepository stockRepo)
+        public StocksController(IMapper mapper, IProductRepository productRepo)
         {
             _mapper = mapper;
             _productRepo = productRepo;
-            _stockRepo = stockRepo;
         }
 
         [HttpGet]
@@ -43,36 +38,15 @@ namespace StockService.Controllers
             return Ok(_mapper.Map<List<ProductReadDto>>(productEntities));
         }
 
-        //[HttpGet("{id}")]
-        //public async Task<ActionResult<ProductCountReadDto>> OrderProduct(int id, [FromQuery] int qty)
-        //{
-        //    var product = _productRepo.GetSingle(p => p.Id == id);
-        //    var stockId = product.StockId;
+        [HttpGet("{productId}")]
+        public async Task<ActionResult<ProductReadDto>> GetProductById(int productId)
+        {
+            var productEntity = await _productRepo.GetSingle(productId);
 
-        //    var productCount = _stockRepo
-        //        .GetSingle(s => s.Id == stockId)
-        //        .Products
-        //        .FirstOrDefault(p => p.ProductId == id);
+            if (productEntity == null)
+                return NotFound();
 
-        //    if (productCount == null) return NotFound();
-
-        //    if (productCount.Quantity >= qty)
-        //    {
-        //        var result = await MakeOrder(productCount, qty, product);
-        //        return Ok(result);
-        //    }
-        //    return BadRequest();
-        //}
-
-        //private async Task<ProductCountReadDto> MakeOrder(ProductCount productCount, int qty, Product product)
-        //{
-        //    productCount.Quantity -= qty;
-        //    await _productRepo.Save();
-        //    var productRead = _mapper.Map<ProductCountReadDto>(productCount);
-        //    productRead.Quantity = qty;
-        //    productRead.Amount = product.Price * qty;
-
-        //    return productRead;
-        //}
+            return Ok(_mapper.Map<ProductReadDto>(productEntity));
+        }
     }
 }

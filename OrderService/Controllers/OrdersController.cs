@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using OrderService.Models;
 using OrderService.Models.Dtos;
@@ -12,7 +13,6 @@ namespace OrderService.Controllers
     {
         private readonly IMapper _mapper;
         private readonly IOrderRepository _orderRepo;
-        // readonly IHttpProductsClient _client;
 
         public OrdersController(IMapper mapper, IOrderRepository orderRepo)
         {
@@ -26,6 +26,14 @@ namespace OrderService.Controllers
             var orders = await _orderRepo.GetAll();
 
             return Ok(_mapper.Map<List<OrderReadDto>>(orders));
+        }
+
+        [HttpGet("id/{orderId}")]
+        public async Task<ActionResult<OrderReadDto>> GetOrderById(int orderId)
+        {
+            var order = await _orderRepo.GetSingle(orderId);
+
+            return Ok(_mapper.Map<OrderReadDto>(order));
         }
 
         [HttpGet("{userId}")]
@@ -45,15 +53,24 @@ namespace OrderService.Controllers
         }
 
         [HttpPost]
-        public async Task<bool> CreateOrder(OrderCreateDto order)
+        public async Task<ActionResult<OrderReadDto>> CreateOrder(OrderCreateDto order)
         {
-            var products = order.Products;
             var orderEntity = _mapper.Map<Order>(order);
             await _orderRepo.Create(orderEntity);
             await _orderRepo.Save();
 
-            return true;
+            return Ok(_mapper.Map<OrderReadDto>(orderEntity));
         }
 
+        [HttpPut("{orderId}")]
+        public async Task<ActionResult<OrderReadDto>> PayForOrder(int orderId)
+        {
+            var order = await _orderRepo.GetSingle(orderId);
+
+            order.Status = Status.Paid;
+            await _orderRepo.Save();
+
+            return Ok(_mapper.Map<OrderReadDto>(order));
+        }
     }
 }

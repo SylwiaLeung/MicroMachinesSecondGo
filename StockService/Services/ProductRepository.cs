@@ -31,12 +31,12 @@ namespace StockService.Services
                 .ToList());
         }
 
-        public async Task<Product> GetSingle(Func<Product, bool> condition)
+        public async Task<Product> GetSingle(int id)
         {
-            return await Task.Run(() => _context.Products
+            return await _context.Products
                 .Include(p => p.Stock)
                 .Include(p => p.Category)
-                .FirstOrDefault(condition));
+                .FirstOrDefaultAsync(p => p.Id == id);
         }
 
         public async Task Save()

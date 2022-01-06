@@ -3,7 +3,7 @@
     public class OrderReadDto
     {
         public int Id { get; set; }
-        public IEnumerable<ProductReadDto> Products { get; set; }
+        public string ProductName { get; set; }
         public int UserId { get; set; }
         public decimal Amount { get; set; }
         public DateTime CreatedDate { get; set; }

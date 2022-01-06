@@ -13,12 +13,12 @@ namespace MicroMachines.HttpClients
             _httpClient = httpClient;
         }
 
-        public async Task<bool> CreateOrder(OrderCreateDto orderDto)
+        public async Task<OrderReadDto> CreateOrder(OrderCreateDto orderDto)
         {
             HttpResponseMessage response = await _httpClient.PostAsJsonAsync($"{_url}/api/orders", orderDto);
             response.EnsureSuccessStatusCode();
 
-            return response.IsSuccessStatusCode ? true : false;
+            return await response.Content.ReadAsAsync<OrderReadDto>(new[] { new JsonMediaTypeFormatter() });
         }
 
         public async Task<IEnumerable<OrderReadDto>> GetAllOrdersAsync()
@@ -66,14 +66,19 @@ namespace MicroMachines.HttpClients
             }
         }
 
-        //public Task AddItemsToCart(int id, int qty)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        public async Task<OrderReadDto> PayForOrder(int orderId)
+        {
+            var requestMessage = new HttpRequestMessage(HttpMethod.Put, $"{_url}/api/orders/{orderId}");
+            var response = await _httpClient.SendAsync(requestMessage);
 
-        //public Task PlaceOrder(int id)
-        //{
-        //    throw new NotImplementedException();
-        //}
+            if (response.IsSuccessStatusCode)
+            {
+                return await response.Content.ReadAsAsync<OrderReadDto>(new[] { new JsonMediaTypeFormatter() });
+            }
+            else
+            {
+                return null;
+            }
+        }
     }
 }

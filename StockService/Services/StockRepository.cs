@@ -23,12 +23,12 @@ namespace StockService.Services
             return await Task.Run(() => _context.Stocks.Where(condition));
         }
 
-        public async Task<Stock> GetSingle(Func<Stock, bool> condition)
+        public async Task<Stock> GetSingle(int id)
         {
             return await Task.Run(() => _context
                 .Stocks
                 .Include(s => s.Products)
-                .FirstOrDefault(condition));
+                .FirstOrDefault(s => s.Id == id));
         }
 
         public async Task Save()

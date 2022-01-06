@@ -23,14 +23,25 @@ namespace OrderService.Services
             await _context.SaveChangesAsync();
         }
 
+        public async Task Update(Order order)
+        {
+            await Task.Run(() => _context.Orders.Update(order));
+        }
+
         public async Task<IEnumerable<Order>> GetAllByCondition(Func<Order, bool> condition)
         {
-            return await Task.Run(() => _context.Orders.Include(x => x.Products).Where(condition));
+            return await Task.Run(() => _context.Orders.Where(condition));
         }
 
         public async Task<IEnumerable<Order>> GetAll()
         {
-            return await Task.Run(() => _context.Orders.Include(x => x.Products));
+            return await Task.Run(() => _context.Orders);
+        }
+
+        public async Task<Order> GetSingle(int orderId)
+        {
+            return await _context.Orders
+                .FirstOrDefaultAsync(o => o.Id == orderId);
         }
     }
 }

@@ -8,7 +8,7 @@ namespace OrderService.MappingProfiles
     {
         public OrderMappingProfile()
         {
-            CreateMap<OrderCreateDto, Order>();
+            CreateMap<OrderCreateDto, Order>().ReverseMap();
             CreateMap<Order, OrderReadDto>().ReverseMap();
         }
     }
