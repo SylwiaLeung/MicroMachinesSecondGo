@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace MicroMachines.Entities
+namespace UserService.Models
 {
-    public class User : IUser
+    public class User
     {
         public int Id { get; set; }
         [Required]

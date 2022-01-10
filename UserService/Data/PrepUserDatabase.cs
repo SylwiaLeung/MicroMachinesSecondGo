@@ -1,8 +1,7 @@
-﻿using MicroMachines.Data;
-using MicroMachines.Entities;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using UserService.Models;
 
-namespace MicroMachines.Data
+namespace UserService.Data
 {
     public static class PrepUserDatabase
     {

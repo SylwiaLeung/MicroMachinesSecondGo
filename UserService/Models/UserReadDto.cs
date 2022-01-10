@@ -1,6 +1,6 @@
-﻿namespace MicroMachines.Entities
+﻿namespace UserService.Models
 {
-    public interface IUser
+    public class UserReadDto
     {
         public int Id { get; set; }
         public string Name { get; set; }

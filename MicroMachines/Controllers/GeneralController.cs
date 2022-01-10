@@ -1,30 +1,29 @@
 ﻿using AutoMapper;
 using MicroMachines.HttpClients;
 using MicroMachines.Models.Dtos;
-using MicroMachines.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MicroMachines.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class UsersController : ControllerBase
+    public class GeneralController : ControllerBase
     {
         private readonly IHttpOrdersClient _ordersClient;
         private readonly IHttpStockClient _stockClient;
-        private readonly IUserRepository _userRepo;
+        private readonly IHttpUserClient _userClient;
 
-        public UsersController(IHttpOrdersClient ordersClient, 
-            IHttpStockClient stockClient, 
-            IUserRepository userRepo)
+        public GeneralController(IHttpOrdersClient ordersClient, 
+            IHttpStockClient stockClient,
+            IHttpUserClient userClient)
         {
             _ordersClient = ordersClient;
             _stockClient = stockClient;
-            _userRepo = userRepo;
+            _userClient = userClient;
         }
 
         [HttpGet("orders")]
-        public async Task<ActionResult<IEnumerable<OrderReadDto>>> GetUsersOrderHistory()
+        public async Task<ActionResult<IEnumerable<OrderReadDto>>> GetAllOrders()
         {
             var orders = await _ordersClient.GetAllOrdersAsync();
             if (orders == null) return BadRequest();
@@ -64,12 +63,12 @@ namespace MicroMachines.Controllers
         public async Task<ActionResult<OrderReadDto>> CreateNewOrder(int productId, int userId)
         {
             var product = await _stockClient.GetProductById(productId);
-            var user = await _userRepo.GetSingle(userId);
+            var user = await _userClient.GetSingle(userId);
             var newOrderDto = new OrderCreateDto() { UserId = userId, ProductName = product.Name, Amount = product.Price };
 
             if (!product.Available)
             {
-                return NotFound("The item you are trying to purchase in unavailable.");
+                return NotFound("The item you are trying to purchase is unavailable.");
             }
             else if (user.Funds < product.Price)
             {
@@ -91,4 +90,4 @@ namespace MicroMachines.Controllers
             return Ok(order);
         }
     }
-};
+}
