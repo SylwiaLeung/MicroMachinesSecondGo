@@ -22,3 +22,10 @@ services:
       dockerfile: StockService/Dockerfile
     ports: [2002:80]
 
+  userservice:
+    image: ${DOCKER_REGISTRY-}userservice
+    build:
+      context: .
+      dockerfile: UserService/Dockerfile
+    ports: [2003:80]
+
