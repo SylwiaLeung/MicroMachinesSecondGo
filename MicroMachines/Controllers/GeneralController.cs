@@ -1,6 +1,5 @@
-﻿using AutoMapper;
+﻿using Shared.Models;
 using MicroMachines.HttpClients;
-using MicroMachines.Models.Dtos;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MicroMachines.Controllers
