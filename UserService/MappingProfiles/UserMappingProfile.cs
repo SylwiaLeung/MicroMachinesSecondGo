@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Shared.Models;
 using UserService.Models;
 
 namespace UserService.MappingProfiles
@@ -7,7 +8,7 @@ namespace UserService.MappingProfiles
     {
         public UserMappingProfile()
         {
-            CreateMap<User, UserReadDto>();
+            CreateMap<User, UserReadDto>().ReverseMap();
             CreateMap<UserUpdateDto, User>();
         }
     }
