@@ -25,9 +25,9 @@ namespace UserService.Data
         {
             var users = new List<User>()
             {
-                new User(){ Name = "Kot Lucek", Funds = 66.5M },
-                new User(){ Name = "Kot Puotka", Funds = 132 },
-                new User(){ Name = "Random", Funds = 1.69M }
+                new User(){ Id = 1, Name = "Kot Lucek", Funds = 66.5M },
+                new User(){ Id = 2, Name = "Kot Puotka", Funds = 132 },
+                new User(){ Id = 3, Name = "Random", Funds = 1.69M }
             };
             return users;
         }
