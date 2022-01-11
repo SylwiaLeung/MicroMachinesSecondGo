@@ -13,11 +13,9 @@ builder.Services.AddControllers()
         s.SerializerSettings.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
     });
 
-
 builder.Services.AddHttpClient<IHttpOrdersClient, HttpOrdersClient>();
 builder.Services.AddHttpClient<IHttpStockClient, HttpStockClient>();
 builder.Services.AddHttpClient<IHttpUserClient, HttpUserClient>();
-
 
 var app = builder.Build();
 

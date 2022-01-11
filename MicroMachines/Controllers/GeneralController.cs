@@ -12,7 +12,8 @@ namespace MicroMachines.Controllers
         private readonly IHttpStockClient _stockClient;
         private readonly IHttpUserClient _userClient;
 
-        public GeneralController(IHttpOrdersClient ordersClient, 
+        public GeneralController(
+            IHttpOrdersClient ordersClient, 
             IHttpStockClient stockClient,
             IHttpUserClient userClient)
         {
@@ -87,6 +88,26 @@ namespace MicroMachines.Controllers
             if (order == null) return BadRequest("cannot update");
 
             return Ok(order);
+        }
+
+        [HttpGet("users/{userId}")]
+        public async Task<ActionResult<UserReadDto>> GetUserById(int userId)
+        {
+            var user = await _userClient.GetSingle(userId);
+
+            if (user == null) return NotFound("Something went wrong on the way");
+
+            return Ok(user);
+        }
+
+        [HttpPut("users/{userId}")]
+        public async Task<ActionResult<UserReadDto>> AddFundsByUserId(int userId, [FromQuery] decimal amount)
+        {
+            var user = await _userClient.AddFunds(userId, amount);
+
+            if (user == null) return BadRequest("cannot update");
+
+            return Ok(user);
         }
     }
 }

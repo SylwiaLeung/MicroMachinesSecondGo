@@ -1,4 +1,5 @@
 ﻿using Shared.Models;
+using System.Net.Http.Formatting;
 
 namespace MicroMachines.HttpClients
 {
@@ -12,9 +13,34 @@ namespace MicroMachines.HttpClients
             _httpClient = httpClient;
         }
 
-        public Task<UserReadDto> GetSingle(int userId)
+        public async Task<UserReadDto> AddFunds(int userId, decimal amount)
         {
-            throw new NotImplementedException();
+            var requestMessage = new HttpRequestMessage(HttpMethod.Put, $"{_url}/api/users/{userId}?amount={amount}");
+            var response = await _httpClient.SendAsync(requestMessage);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return await response.Content.ReadAsAsync<UserReadDto>(new[] { new JsonMediaTypeFormatter() });
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public async Task<UserReadDto> GetSingle(int userId)
+        {
+            var requestMessage = new HttpRequestMessage(HttpMethod.Get, $"{_url}/api/users/{userId}");
+            var response = await _httpClient.SendAsync(requestMessage);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return await response.Content.ReadAsAsync<UserReadDto>(new[] { new JsonMediaTypeFormatter() });
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }
