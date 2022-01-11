@@ -1,15 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace UserService.Models
+﻿namespace Shared.Models
 {
-    public class User
+    public class UserReadDto
     {
         public int Id { get; set; }
-        [Required]
         public string Name { get; set; }
-        [Required]
         public decimal Funds { get; set; }
         public IEnumerable<int> Wishlist { get; set; }
-
     }
 }
