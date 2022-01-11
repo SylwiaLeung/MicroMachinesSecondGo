@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Shared.Models;
 using UserService.Services;
 
 namespace UserService.Controllers
@@ -15,6 +16,31 @@ namespace UserService.Controllers
         {
             _mapper = mapper;
             _userRepo = userRepo;
+        }
+
+        [HttpGet("{userId}")]
+        public async Task<ActionResult<UserReadDto>> GetUserById(int userId)
+        {
+            var user = await _userRepo.GetSingle(userId);
+
+            if (user == null)
+                return NotFound("No such user found");
+
+            return Ok(_mapper.Map<UserReadDto>(user));
+        }
+
+        [HttpPut("{userId}")]
+        public async Task<ActionResult<UserReadDto>> UpdateUserFunds(int userId, [FromQuery] decimal amount)
+        {
+            var user = await _userRepo.GetSingle(userId);
+
+            if (user == null)
+                return NotFound();
+
+            user.Funds += amount;
+            await _userRepo.Save();
+
+            return Ok(_mapper.Map<UserReadDto>(user));
         }
     }
 }
