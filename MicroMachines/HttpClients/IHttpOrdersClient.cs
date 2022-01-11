@@ -1,4 +1,4 @@
-﻿using MicroMachines.Models.Dtos;
+﻿using Shared.Models;
 
 namespace MicroMachines.HttpClients
 {

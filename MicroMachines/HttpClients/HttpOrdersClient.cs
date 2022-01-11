@@ -1,4 +1,4 @@
-﻿using MicroMachines.Models.Dtos;
+﻿using Shared.Models;
 using System.Net.Http.Formatting;
 
 namespace MicroMachines.HttpClients
